@@ -1,4 +1,5 @@
 print("This is a universal data entry tool made with Python used to create, edit, and delete JSON files.")
+print("This tool's basic version will be fully fleshed out with comments to be altered in any specific ways for any tasks (e.g., language data, creature data, etc.).");
 
 # Universal
 # Schemas?
