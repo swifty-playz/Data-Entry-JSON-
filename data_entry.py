@@ -281,27 +281,28 @@ def create_new_schema():
 # "Select action (1-6) or 'B' to go back: "
 
 def main_action_menu():
-	print("\n--- Main Action Menu ---")
-
-	# Print active database and schema
-	if active_database_path == None:
-		print(f"\nDATABASE: {active_database_path} | SCHEMA: {os.path.basename(active_schema_path)}\n")
-	else:
-		print(f"\nDATABASE: {os.path.basename(active_database_path)} | SCHEMA: {os.path.basename(active_schema_path)}\n")
-
 	# Selecting actions
 	while True:
+		print("\n--- Main Action Menu ---")
+
+		# Print active database and schema
+		if active_database_path == None:
+			print(f"\nDATABASE: {active_database_path} | SCHEMA: {os.path.basename(active_schema_path)}\n")
+		else:
+			print(f"\nDATABASE: {os.path.basename(active_database_path)} | SCHEMA: {os.path.basename(active_schema_path)}\n")
+
 		print("[1] Add new Entry")
 		print("[2] Search / Edit Entries")
 		print("[3] Delete an Entry")
-		print("[4] View All (Print Data)")
-		print("[5] Drop to Manual Editor (Nano)")
-		print("[6] Change Active File/Schema")
-		print("[7] Delete Schema")
-		print("[8] Delete Database")
+		print("[4] View Entire Database")
+		print("[5] View Schema")
+		print("[6] Drop to Manual Editor (Nano)")
+		print("[7] Change Active File/Schema")
+		print("[8] Delete Schema")
+		print("[9] Delete Database")
 		print()
 
-		choice = input("Select action (1-8) or 'B' to go back: ")
+		choice = input("Select action (1-9) or 'B' to go back: ")
 
 		if choice == '1':
 			add_entry()
@@ -316,21 +317,24 @@ def main_action_menu():
 			print_database()
 			#return
 		elif choice == '5':
-			print("Dropping to Manuel Editor")
+			print_schema()
 			#return
 		elif choice == '6':
-			print("Changing Active File/Schema")
+			print("Dropping to Manuel Editor")
 			#return
 		elif choice == '7':
-			print("Deleting Schema")
+			print("Changing Active File/Schema")
 			#return
 		elif choice == '8':
+			print("Deleting Schema")
+			#return
+		elif choice == '9':
 			print("Deleting Database")
 			#return
 		elif choice == 'B' or choice == 'b':
 			return
 		else:
-			print("Please enter either 1-3 or 'Q' for an action\n")
+			print("\nPlease enter either 1-9 or 'B' for an action")
 
 
 # Dynamic Entry Form (Core Mechanic)
@@ -471,7 +475,7 @@ def print_database():
 	# Convert the dictionary into a perfectly indented string
 	pretty_json = json.dumps(db_data, indent=4)
 	
-	print("\nViewing All Data")
+	print("\nViewing the Entire Database")
 	print("-" * 50)
 	print(pretty_json)
 	print("-" * 50)
@@ -480,7 +484,19 @@ def print_database():
 
 
 def print_schema():
-	return
+	# Open the schema file and load the data into schema_data
+	with open(active_schema_path, "r") as f:
+			schema_data = json.load(f)
+			
+	# Convert the dictionary into a perfectly indented string
+	pretty_json = json.dumps(schema_data, indent=4)
+	
+	print("\nViewing the Schema")
+	print("-" * 50)
+	print(pretty_json)
+	print("-" * 50)
+	
+	input("\nPress [Enter] to go back.")
 
 
 def clear_screen():
