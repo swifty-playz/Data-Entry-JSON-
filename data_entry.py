@@ -20,6 +20,8 @@ os.makedirs(DATABASE_FOLDER, exist_ok=True)
 # Active targets start empty
 active_schema_path = None
 active_database_path = None
+active_schema = "None"
+active_database = "None"
 
 
 def main():
@@ -64,7 +66,9 @@ def home_screen():
 			chosen_file = select_file(SCHEMA_FOLDER, "schema")
 			if chosen_file:
 				active_schema_path = chosen_file
+				active_schema = os.path.basename(active_schema_path)
 				active_database_path = None
+				active_database = "None"
 			main_action_menu()
 
 		elif choice == '2':
@@ -122,6 +126,8 @@ def select_file(target_folder, label_name):
 def load_database_and_schema(chosen_db_path):
 	global active_database_path
 	global active_schema_path
+	global active_database
+	global active_schema
 
 	try:
 		with open(chosen_db_path, "r") as f:
@@ -129,9 +135,11 @@ def load_database_and_schema(chosen_db_path):
 
 		# Lock onto the database path
 		active_database_path = chosen_db_path
+		active_database = os.path.basename(chosen_db_path)
 
 		# Extract the schema name from the file's metadata wrapper
 		schema_name = data.get("schema_used")
+		active_schema = schema_name
 
 		# Automatically stitch together the full path to that schema
 		active_schema_path = os.path.join(SCHEMA_FOLDER, schema_name)
@@ -140,6 +148,7 @@ def load_database_and_schema(chosen_db_path):
 		if not os.path.exists(active_schema_path):
 			print(f"\n[Warning] This database requires '{schema_name}', but that schema file is missing.")
 			active_schema_path = None
+			active_schema = "None"
 	except Exception as e:
 		print(f"Error loading file data: {e}")
 
@@ -295,7 +304,7 @@ def main_action_menu():
 		choice = input("Select action (1-8) or 'B' to go back: ")
 
 		if choice == '1':
-			print("Adding new entry")
+			add_entry()
 			#return
 		elif choice == '2':
 			print("Searching / Editing Entries")
@@ -305,6 +314,7 @@ def main_action_menu():
 			#return
 		elif choice == '4':
 			print("Viewing All Data")
+			print_database()
 			#return
 		elif choice == '5':
 			print("Dropping to Manuel Editor")
@@ -322,15 +332,6 @@ def main_action_menu():
 			return
 		else:
 			print("Please enter either 1-3 or 'Q' for an action\n")
-
-
-def add_entry():
-	# Access schema for the database
-	# Loop through fields from schema, requesting value inputs
-	# Combine fields and values, and add them to a single entry in the database
-	
-	return
-
 
 
 # Dynamic Entry Form (Core Mechanic)
@@ -352,9 +353,123 @@ def add_entry():
 
 # "Entry added successfully!"	# Prints if user selects 'S' and it is the only entry of its kind
 
-def dynamic_entry_form():
-	print("\n")
-	print("Dynamic Entry Form")
+def add_entry():
+	global active_database_path
+	global active_schema_path
+	global active_schema
+	
+	# Safety Check: Prevent crashes if no file is currently loaded
+	if not active_database_path or not active_schema_path:
+		print("Error: No active database or schema loaded.")
+		input("\nPress [Enter] to go back.")
+		return
+	
+	print("\n--- Add Entry Form ---\n")
+	print(f"Filling Data Fields from Schema: {active_schema}\n")
+	
+	# Read the schema file to see what fields are needed
+	with open(active_schema_path, "r") as f:
+			fields = json.load(f)
+			
+	# Loop through fields and collect inputs into a clean directory
+	new_entry = {}
+	for field in fields:
+			user_input = input(f"{field}: ").strip()
+			new_entry[field] = user_input
+		
+	# deleted code----------------
+			
+	# Confirm Saving
+	print("\n[S]ave Entry")
+	print("[C]ancel Entry")
+	action = input("Select action 'S' or 'C': ").strip().upper()
+	
+	if action == 'S':
+		# Open the database file and load the earlier built structure
+		with open(active_database_path, "r") as f:
+			db_data = json.load(f)
+		
+		# Duplicate Entry Check
+		# Grab the primary key field name (will always be index 0 of the schema layout)
+		primary_key_field = fields[0]
+		new_value_to_check = new_entry[primary_key_field].lower().strip()
+		
+		duplicate_found = False
+		duplicate_index = -1
+		
+		# Scan existing records inside the data array for a matching entry string
+		for idx, existing_entry in enumerate(db_data["entries"]):
+			if existing_entry.get(primary_key_field, "").lower().strip() == new_value_to_check:
+				duplicate_found = True
+				duplicate_index = idx
+				break
+		
+		# If a match is found, prompt user with an overwrite loop
+		if duplicate_found:
+			print(f"\nEntry '{new_entry[primary_key_field]}' already exists.")
+			print("[O]verwrite or [C]ancel?")
+			overwrite_choice = input("Select action 'O' or 'C': ").upper()
+			
+			if overwrite_choice == 'O':
+				# Replace the old record dictionary completely with the new one
+				db_data["entries"] [duplicate_index] = new_entry
+				print("\nEntry overwritten successfully.")
+			else:
+				print("\nSave cancelled. Existing entry preserved.")
+				input("\nPress [Enter] to go back to the menu.")
+				return
+		else:
+			# Append the new entry dictionary (no duplicate) to the 'entries' list inside the database
+			db_data["entries"].append(new_entry)
+
+		# Save the entire updated structure back to the file
+		with open(active_database_path, "w") as f:
+			json.dump(db_data, f, indent=4)
+			
+		print("\nEntry added successfully.")
+		input("\nPress [Enter] to continue.")
+	else:
+		print("\nEntry cancelled.")
+		input("\nPress [Enter] to continue.")
+
+	# Access schema for the database
+	# Loop through fields from schema, requesting value inputs
+	# Combine fields and values, and add them to a single entry in the database
+	
+	return
+	
+	
+def add_schema_field():
+	# Ask for a field name
+	# Add new field into the schema blueprint
+	
+	# Ask user if they want to add this field into all entries using this updated schema
+
+	return
+	
+	
+def remove_schema_field():
+	# Ask which field to remove
+	# Remove that field from the schema blueprint
+	
+	# Ask user if they want to remove this field from all entries using this updated schema
+	
+	return
+	
+
+def update_database_with_new_schema():
+	# This function may be called when a schema is updated
+	# It will update the entries in a database with an updated schema (added/removed fields)
+	
+	return
+
+
+def print_database():
+	return
+
+
+def print_schema():
+	return
 
 
 def clear_screen():
