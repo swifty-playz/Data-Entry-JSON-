@@ -313,7 +313,6 @@ def main_action_menu():
 			print("Deleting an Entry")
 			#return
 		elif choice == '4':
-			print("Viewing All Data")
 			print_database()
 			#return
 		elif choice == '5':
@@ -465,7 +464,19 @@ def update_database_with_new_schema():
 
 
 def print_database():
-	return
+	# Open the database file and load the data into db_data
+	with open(active_database_path, "r") as f:
+			db_data = json.load(f)
+			
+	# Convert the dictionary into a perfectly indented string
+	pretty_json = json.dumps(db_data, indent=4)
+	
+	print("\nViewing All Data")
+	print("-" * 50)
+	print(pretty_json)
+	print("-" * 50)
+	
+	input("\nPress [Enter] to go back.")
 
 
 def print_schema():

@@ -3,7 +3,11 @@
     "entries": [
         {
             "word": "katt",
-            "meaning": "dog"
+            "meaning": "cat"
+        },
+        {
+            "word": "gutten",
+            "meaning": "the boy"
         }
     ]
 }
