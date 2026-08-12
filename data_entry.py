@@ -24,11 +24,7 @@ active_database_path = None
 
 def main():
 	home_screen()
-	#main_action_menu()
-	#dynamic_entry_form()
 
-
-#home_screen()
 
 # Home Screen
 # "===== UNIVERSAL JSON DATA ENTRY TOOL ====="
@@ -41,44 +37,52 @@ def main():
 # "Select action (1-3) or 'Q' to quit: "
 
 def home_screen():
-	print()
-	print("Home Screen")
-
-	print("===== UNIVERSAL JSON DATA ENTRY TOOL =====")
-
-	# Get active directory and print it
-	print()
+	global active_schema_path
+	global active_database_path
 
 	# Selecting actions
 	while True:
+		# Clear the screen for clarity on next loop
+		clear_screen()
+
+		print("===== UNIVERSAL JSON DATA ENTRY TOOL =====")
+		print("\n--- Home Screen ---\n")
+
+		# Get active directory and print it
+		print(f"Active Directory: {BASE_DIR}\n")
+
 		print("[1] Edit schema file")
 		print("[2] Edit database file")
 		print("[3] Create a brand new SCHEMA blueprint")
 		print("[4] Create a brand new DATABASE file from a schema")
-
 		print()
 
-		answer = input("Select action (1-4) or 'Q' to quit: ")
+		choice = input("Select action (1-4) or 'Q' to quit: ")
 
-		if answer == '1':
-			print("Editing schema file")
-			active_schema_path = select_file(SCHEMA_FOLDER, "schema")
-			#main_action_menu(schema_file)
-			return
-		elif answer == '2':
-			print("Editing database file")
-			active_database_path = select_file(DATABASE_FOLDER, "database")
-			#main_action_menu(database_file)
-			return
-		elif answer == '3':
+		if choice == '1':
+			# SCHEMA ONLY WORKFLOW
+			chosen_file = select_file(SCHEMA_FOLDER, "schema")
+			if chosen_file:
+				active_schema_path = chosen_file
+				active_database_path = None
+			main_action_menu()
+
+		elif choice == '2':
+			# DATABASE WORKFLOW (AUTO-LOAD)
+			chosen_file = select_file(DATABASE_FOLDER, "database")
+			if chosen_file:
+				load_database_and_schema(chosen_file)
+				if active_database_path and active_schema_path:
+					main_action_menu()
+		elif choice == '3':
 			print("Creating new schema blueprint")
 			create_new_schema()
-			return
-		elif answer == '4':
+			#return
+		elif choice == '4':
 			print("Creating new JSON database")
 			create_new_database()
-			return
-		elif answer == 'Q':
+			#return
+		elif choice == 'Q' or choice == 'q':
 			return
 		else:
 			print("Please enter either 1-3 or 'Q' for an action\n")
@@ -115,6 +119,31 @@ def select_file(target_folder, label_name):
 	return None
 
 
+def load_database_and_schema(chosen_db_path):
+	global active_database_path
+	global active_schema_path
+
+	try:
+		with open(chosen_db_path, "r") as f:
+			data = json.load(f)
+
+		# Lock onto the database path
+		active_database_path = chosen_db_path
+
+		# Extract the schema name from the file's metadata wrapper
+		schema_name = data.get("schema_used")
+
+		# Automatically stitch together the full path to that schema
+		active_schema_path = os.path.join(SCHEMA_FOLDER, schema_name)
+
+		# Double check that the schema file actually exists on the disk
+		if not os.path.exists(active_schema_path):
+			print(f"\n[Warning] This database requires '{schema_name}', but that schema file is missing.")
+			active_schema_path = None
+	except Exception as e:
+		print(f"Error loading file data: {e}")
+
+
 def create_new_database():
 	print("\n--- Create a Brand New Database ---")
 
@@ -143,13 +172,23 @@ def create_new_database():
 		print("Database creation cancelled because no valid schema was selected.")
 		return None
 
+	# Extract just the filename to store as a reference
+	schema_filename = os.path.basename(chosen_schema_path)
+
+	# Blueprint wrapper
+	db_structure = {
+		"schema_used": schema_filename,
+		"entries": []	# Data records will live inside this list
+	}
+
+	print(db_structure)
+
 	# Initialize the file with an empty JSON array
 	# A fresh database must start as a valid JSON list [] so you can append records to it later
 	try:
 		with open(full_db_path, "w") as f:
-			json.dump([], f, indent=4)	# indent=4 keeps the text file readable
-		print(f"\nSuccessfully created database file: {db_name}")
-		print(f"Bound to blueprint: {os.path.basename(chosen_schema_path)}")
+			json.dump(db_structure, f, indent=4)	# indent=4 keeps the text file readable
+		print(f"\nSuccessfully created database file: {db_name} linked to {schema_filename}.")
 
 		# Return both paths so the script can immediately load them into active memory
 		return full_db_path, chosen_schema_path
@@ -233,8 +272,65 @@ def create_new_schema():
 # "Select action (1-6) or 'B' to go back: "
 
 def main_action_menu():
-	print("\n")
-	print("Main Action Menu")
+	print("\n--- Main Action Menu ---")
+
+	# Print active database and schema
+	if active_database_path == None:
+		print(f"\nDATABASE: {active_database_path} | SCHEMA: {os.path.basename(active_schema_path)}\n")
+	else:
+		print(f"\nDATABASE: {os.path.basename(active_database_path)} | SCHEMA: {os.path.basename(active_schema_path)}\n")
+
+	# Selecting actions
+	while True:
+		print("[1] Add new Entry")
+		print("[2] Search / Edit Entries")
+		print("[3] Delete an Entry")
+		print("[4] View All (Print Data)")
+		print("[5] Drop to Manual Editor (Nano)")
+		print("[6] Change Active File/Schema")
+		print("[7] Delete Schema")
+		print("[8] Delete Database")
+		print()
+
+		choice = input("Select action (1-8) or 'B' to go back: ")
+
+		if choice == '1':
+			print("Adding new entry")
+			#return
+		elif choice == '2':
+			print("Searching / Editing Entries")
+			#return
+		elif choice == '3':
+			print("Deleting an Entry")
+			#return
+		elif choice == '4':
+			print("Viewing All Data")
+			#return
+		elif choice == '5':
+			print("Dropping to Manuel Editor")
+			#return
+		elif choice == '6':
+			print("Changing Active File/Schema")
+			#return
+		elif choice == '7':
+			print("Deleting Schema")
+			#return
+		elif choice == '8':
+			print("Deleting Database")
+			#return
+		elif choice == 'B' or choice == 'b':
+			return
+		else:
+			print("Please enter either 1-3 or 'Q' for an action\n")
+
+
+def add_entry():
+	# Access schema for the database
+	# Loop through fields from schema, requesting value inputs
+	# Combine fields and values, and add them to a single entry in the database
+	
+	return
+
 
 
 # Dynamic Entry Form (Core Mechanic)
@@ -259,6 +355,11 @@ def main_action_menu():
 def dynamic_entry_form():
 	print("\n")
 	print("Dynamic Entry Form")
+
+
+def clear_screen():
+	# 'nt' means Windows, 'posix' covers Linux and Mac
+	os.system('cls' if os.name == 'nt' else 'clear')
 
 
 main()
