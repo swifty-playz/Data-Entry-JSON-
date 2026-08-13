@@ -1,7 +1,9 @@
 # ===== UNIVERSAL JSON DATA ENTRY TOOL =====
-print("This is a universal data entry tool made with Python used to create, edit, and delete JSON files.")
-print("This tool's basic version will be fully fleshed out with comments to be altered in any specific ways for any tasks (e.g., language data, creature data, etc.).");
-
+# This is a universal data entry tool made with Python used to 
+	# create, edit, and delete JSON files (databases/schemas).
+# This tool's basic version will be fully fleshed out with comments 
+	# to be altered in any specific ways for any tasks (e.g., language 
+	# data, creature data, item data, etc.).
 
 import json
 import os
@@ -23,20 +25,21 @@ active_database_path = None
 active_schema = "None"
 active_database = "None"
 
-
 def main():
 	home_screen()
 
-
 # Home Screen
-# "===== UNIVERSAL JSON DATA ENTRY TOOL ====="
-# "Active Directory: ./directory_name/"
+# ===== UNIVERSAL JSON DATA ENTRY TOOL =====
 
-# "[1] Edit schema file"
-# "[2] Edit database file"
-# "[3] Create a brand new JSON database"
+# --- Home Screen ---
+# Active Directory: ./directory_name/
 
-# "Select action (1-3) or 'Q' to quit: "
+# [1] Edit schema file
+# [2] Edit database file
+# [3] Create a brand new SCHEMA blueprint
+# [4] Create a brand new DATABASE file from a schema
+
+# Select action (1-4) or 'Q' to quit: 
 
 def home_screen():
 	global active_schema_path
@@ -69,7 +72,7 @@ def home_screen():
 				active_schema = os.path.basename(active_schema_path)
 				active_database_path = None
 				active_database = "None"
-			main_action_menu()
+				main_action_menu()
 
 		elif choice == '2':
 			# DATABASE WORKFLOW (AUTO-LOAD)
@@ -79,13 +82,9 @@ def home_screen():
 				if active_database_path and active_schema_path:
 					main_action_menu()
 		elif choice == '3':
-			print("Creating new schema blueprint")
 			create_new_schema()
-			#return
 		elif choice == '4':
-			print("Creating new JSON database")
 			create_new_database()
-			#return
 		elif choice == 'Q' or choice == 'q':
 			return
 		else:
@@ -120,6 +119,7 @@ def select_file(target_folder, label_name):
 		pass
 
 	print("Invalid selection.")
+	input("\nPress [Enter] to go back.")
 	return None
 
 
@@ -159,7 +159,8 @@ def create_new_database():
 	# Get the new filename
 	db_name = input("Enter a name for your new database file: ").strip()
 	if not db_name:
-		print("Filename cannot be blank.")
+		print("\nFilename cannot be blank.")
+		input("\nPress [Enter] to go back.")
 		return None
 
 	# Auto append .json extension if the user forgets to type it
@@ -212,7 +213,8 @@ def create_new_schema():
 	# Get the new schema filename
 	schema_name = input("Enter a name for this schema: ").strip()
 	if not schema_name:
-		print("Schema name cannot be blank.")
+		print("\nSchema name cannot be blank.")
+		input("\nPress [Enter] to go back.")
 		return None
 
 	# Auto append .json extension if the user forgets to type it
@@ -310,6 +312,7 @@ def main_action_menu():
 			search_entries()
 		elif choice == '3':
 			print("Deleting an Entry")
+			delete_entry()
 		elif choice == '4':
 			print_database()
 		elif choice == '5':
@@ -370,7 +373,13 @@ def add_entry():
 	for field in fields:
 			user_input = input(f"{field}: ").strip()
 			new_entry[field] = user_input
-		
+			
+			#print(fields[0])
+			if field == fields[0]:
+				if user_input == "":
+					print("\nEntry cancelled. The primary field cannot be left empty.")
+					input("\nPress [Enter] to go back.")
+					return
 	# Confirm Saving
 	print("\n[S]ave Entry")
 	print("[C]ancel Entry")
@@ -424,10 +433,6 @@ def add_entry():
 		print("\nEntry cancelled.")
 		input("\nPress [Enter] to continue.")
 
-	# Access schema for the database
-	# Loop through fields from schema, requesting value inputs
-	# Combine fields and values, and add them to a single entry in the database
-	
 	return
 	
 	
@@ -487,13 +492,6 @@ def print_schema():
 	
 	input("\nPress [Enter] to go back.")
 
-
-# Grab the first field from the schema (primary field, value is unique to all other entries)
-# Ask user what to search for
-# Search each entry's primary field from the user's request
-# If search is found, print it to the user
-# Else, print no search found.
-	
 def search_entries():
 	global active_database_path
 	global active_schema_path
@@ -546,6 +544,10 @@ def search_entries():
 	print("-" * 50)
 	
 	input("\nPress [Enter] to go back to the menu.")
+	return
+
+
+def delete_entry():
 	return
 
 
