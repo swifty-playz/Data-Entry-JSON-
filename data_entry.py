@@ -306,31 +306,22 @@ def main_action_menu():
 
 		if choice == '1':
 			add_entry()
-			#return
 		elif choice == '2':
-			print("Searching / Editing Entries")
-			#return
+			search_entries()
 		elif choice == '3':
 			print("Deleting an Entry")
-			#return
 		elif choice == '4':
 			print_database()
-			#return
 		elif choice == '5':
 			print_schema()
-			#return
 		elif choice == '6':
 			print("Dropping to Manuel Editor")
-			#return
 		elif choice == '7':
 			print("Changing Active File/Schema")
-			#return
 		elif choice == '8':
 			print("Deleting Schema")
-			#return
 		elif choice == '9':
 			print("Deleting Database")
-			#return
 		elif choice == 'B' or choice == 'b':
 			return
 		else:
@@ -380,8 +371,6 @@ def add_entry():
 			user_input = input(f"{field}: ").strip()
 			new_entry[field] = user_input
 		
-	# deleted code----------------
-			
 	# Confirm Saving
 	print("\n[S]ave Entry")
 	print("[C]ancel Entry")
@@ -497,6 +486,67 @@ def print_schema():
 	print("-" * 50)
 	
 	input("\nPress [Enter] to go back.")
+
+
+# Grab the first field from the schema (primary field, value is unique to all other entries)
+# Ask user what to search for
+# Search each entry's primary field from the user's request
+# If search is found, print it to the user
+# Else, print no search found.
+	
+def search_entries():
+	global active_database_path
+	global active_schema_path
+	global active_database
+	#global active_schema
+	
+	# Safety Check: Prevent crashes if no file is currently loaded
+	if not active_database_path:
+		print("Error: No active database loaded.")
+		input("\nPress [Enter] to go back.")
+		return
+	
+	print("\n--- Search Entries ---\n")
+	print(f"Searching Entries from: {active_database}\n")
+	
+	# Read the schema file to grab the primary field
+	with open(active_schema_path, "r") as f:
+			fields = json.load(f)
+			
+	primary_key_field = fields[0]
+			
+	query = input(f"Enter the {primary_key_field} to search for: ").strip()
+	
+	if not query:
+		print("Search cancelled. Query cannot be blank.")
+		input("\nPress [Enter] to go back.")
+		return
+		
+	# Open the database file and load the earlier built structure
+	with open(active_database_path, "r") as f:
+		db_data = json.load(f)
+	
+	# Scan for the unique record
+	found_entry = None
+	for entry in db_data["entries"]:
+		# Case-insensitive comparison of the primary key field value
+		if entry.get(primary_key_field, "").strip().lower() == query:
+			found_entry = entry
+			break	# Stop looping because the unique entry has been found
+	
+	# Display the result cleanly
+	print("-" * 50)
+	if found_entry:
+		print("Entry Found.\n")
+		# Print out all the fields and values for this specific match nicely
+		for key, value in found_entry.items():
+			print(f"{key}: {value}")
+	else:
+		print(f"No entry found matching {primary_key_field}: '{query}'")
+	print("-" * 50)
+	
+	input("\nPress [Enter] to go back to the menu.")
+	return
 
 
 def clear_screen():

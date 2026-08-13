@@ -3,11 +3,23 @@
     "entries": [
         {
             "word": "katt",
-            "meaning": "cat"
+            "meaning": "dog"
         },
         {
             "word": "gutten",
             "meaning": "the boy"
+        },
+        {
+            "word": "snill",
+            "meaning": "nice"
+        },
+        {
+            "word": "veldig",
+            "meaning": "very"
+        },
+        {
+            "word": "hund",
+            "meaning": "dog"
         }
     ]
 }
