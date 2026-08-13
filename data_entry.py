@@ -7,6 +7,8 @@
 
 import json
 import os
+import subprocess
+import sys
 
 # Finds exact folder where data_entry.py is currently sitting
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -294,11 +296,11 @@ def main_action_menu():
 			print(f"\nDATABASE: {os.path.basename(active_database_path)} | SCHEMA: {os.path.basename(active_schema_path)}\n")
 
 		print("[1] Add new Entry")
-		print("[2] Search / Edit Entries")
+		print("[2] Search Entries")
 		print("[3] Delete an Entry")
 		print("[4] View Entire Database")
 		print("[5] View Schema")
-		print("[6] Drop to Manual Editor (Nano)")
+		print("[6] Drop to Manual Database Editor")
 		print("[7] Change Active File/Schema")
 		print("[8] Delete Schema")
 		print("[9] Delete Database")
@@ -317,7 +319,7 @@ def main_action_menu():
 		elif choice == '5':
 			print_schema()
 		elif choice == '6':
-			print("Dropping to Manuel Editor")
+			edit_entries_manual()
 		elif choice == '7':
 			print("Changing Active File/Schema")
 		elif choice == '8':
@@ -607,6 +609,43 @@ def find_entry_index():
 			return idx	# Found it.
 	
 	return -1	# Didn't find it.
+
+
+def edit_entries_manual():
+	global active_database_path
+	
+	if not active_database_path:
+		print("Error: No active database loaded.")
+		input("\nPress [Enter] to go back.")
+		return
+	
+	print("\n--- Manual Database File Editor ---\n")
+	print(f"Target File: {active_database}\n")
+	
+	print("[1] Quick Edit in Command Line (Nano)")
+	print("[2] Open File in System Default Text Editor (GUI)\n")
+	
+	choice = input("Select action (1-2) or 'B' to go back: ")
+	
+	if choice == '1':
+		print(f"Opening {active_database} in Nano...")
+		subprocess.run(["nano", active_database_path])
+		print("\nReturned from Nano. File save completed.")
+		input("\nPress [Enter] to continue.")
+		return
+	elif choice == '2':
+		print(f"Launching system editor for {active_database}...")	# Geany
+		try:
+			subprocess.run(["geany", active_database_path])
+		except:
+			# Safety fallback if Geany doesn't exist on machine
+			print("\nError: Geany editor command not found on this system.")
+			input("\nPress [Enter] to continue.")
+			return
+
+		print("File opened in external editor window.")
+		input("\nPress [Enter] after you have saved and closed the external file to refresh.")
+		return
 
 
 def clear_screen():
