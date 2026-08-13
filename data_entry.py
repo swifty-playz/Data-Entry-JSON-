@@ -311,7 +311,6 @@ def main_action_menu():
 		elif choice == '2':
 			search_entries()
 		elif choice == '3':
-			print("Deleting an Entry")
 			delete_entry()
 		elif choice == '4':
 			print_database()
@@ -548,7 +547,66 @@ def search_entries():
 
 
 def delete_entry():
+	global active_database_path
+	global active_schema_path
+	
+	if not active_database_path:
+		print("Error: No active database loaded.")
+		input("\nPress [Enter] to go back.")
+		return
+		
+	print("\n--- Delete an Entry ---")
+	
+	# Use the helper function find_entry_index() to find where the entry is
+	target_index = find_entry_index()
+	
+	if target_index == -1:
+		print("\nNo matching entry found, or search was blank.")
+		input("\nPress [Enter] to go back.")
+		return
+		
+	# Load the file data
+	with open(active_database_path, "r") as f:
+		db_data = json.load(f)
+		
+	# Pull the entry out of the list using .pop() to show it to the user
+	deleted_entry = db_data["entries"].pop(target_index)
+	
+	# Grab the primary key name to make a clean confirmation message
+	with open(active_schema_path, "r") as f:
+		fields = json.load(f)
+	primary_key_value = deleted_entry.get(fields[0])
+	
+	# Save the updated database back to the file
+	with open(active_database_path, "w") as f:
+		json.dump(db_data, f, indent=4)
+		
+	print(f"\nSuccessfully deleted entry: '{primary_key_value}'.")
+	input("\nPress [Enter] to continue.")
 	return
+
+
+def find_entry_index():
+	# Scans the database and returns the index of the matching entry, or a -1.
+	with open(active_schema_path, "r") as f:
+		fields = json.load(f)
+	
+	# Get the primary field
+	primary_key_field = fields[0]
+
+	query = input(f"Enter the {primary_key_field} to target: ").strip().lower()
+	if not query:
+		return -1
+		
+	with open(active_database_path, "r") as f:
+		db_data = json.load(f)
+		
+	# Use enumerate to grab the actual number position (idx)
+	for idx, entry in enumerate(db_data["entries"]):
+		if entry.get(primary_key_field, "").strip().lower() == query:
+			return idx	# Found it.
+	
+	return -1	# Didn't find it.
 
 
 def clear_screen():

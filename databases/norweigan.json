@@ -2,10 +2,6 @@
     "schema_used": "norweigan_schema.json",
     "entries": [
         {
-            "word": "katt",
-            "meaning": "dog"
-        },
-        {
             "word": "gutten",
             "meaning": "the boy"
         },
@@ -18,12 +14,12 @@
             "meaning": "very"
         },
         {
-            "word": "hund",
-            "meaning": "dog"
+            "word": "katt",
+            "meaning": "cat"
         },
         {
-            "word": "",
-            "meaning": ""
+            "word": "hund",
+            "meaning": "dog"
         }
     ]
 }
