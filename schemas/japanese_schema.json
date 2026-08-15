@@ -1,6 +1,9 @@
 [
     "word",
+    "kana_reading",
+    "romaji",
     "part_of_speech",
     "meaning",
+    "JLPT_level",
     "example_sentence"
 ]

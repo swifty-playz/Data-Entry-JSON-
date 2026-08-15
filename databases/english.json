@@ -1,0 +1,17 @@
+{
+    "schema_used": "english_schema.json",
+    "entries": [
+        {
+            "word": "noun",
+            "part_of_speech": "noun",
+            "meaning": "A noun is a word that names a person, place, thing, or idea.",
+            "example_sentence": "\"The word 'dog' is a noun.\""
+        },
+        {
+            "word": "serendipity",
+            "part_of_speech": "noun",
+            "meaning": "The chance of occurrence of events in a beneficial or happy way.",
+            "example_sentence": "\"Finding a twenty-dollar bill in her old winter coat was a wonderful piece of serendipity.\""
+        }
+    ]
+}

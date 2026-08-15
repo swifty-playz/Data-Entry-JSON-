@@ -83,6 +83,8 @@ def home_screen():
 				load_database_and_schema(chosen_file)
 				if active_database_path and active_schema_path:
 					main_action_menu()
+			else:
+				input("\nPress [Enter] to go back.")
 		elif choice == '3':
 			create_new_schema()
 		elif choice == '4':
