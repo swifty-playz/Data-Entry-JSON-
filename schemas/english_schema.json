@@ -2,5 +2,6 @@
     "word",
     "part_of_speech",
     "meaning",
-    "example_sentence"
+    "example_sentence",
+    "type"
 ]

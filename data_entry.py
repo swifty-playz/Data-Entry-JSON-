@@ -188,14 +188,25 @@ def create_new_database():
 
 	# Extract just the filename to store as a reference
 	schema_filename = os.path.basename(chosen_schema_path)
-
+	
+	# Ask user if they want any other fields and values for the database, outside the schema's entries
 	# Blueprint wrapper
-	db_structure = {
-		"schema_used": schema_filename,
-		"entries": []	# Data records will live inside this list
-	}
-
-	print(db_structure)
+	db_structure = {}
+	db_structure["schema_used"] = schema_filename
+	
+	print("\nEnter any other fields and corresponding values for the base database, outside the schema's entries.")
+	print("Press [Enter] in an empty space to finish.\n")
+	while True:
+		another_field = input("Field: ")
+		if another_field == "":
+			break
+		another_value = input("Value: ")
+		if another_value == "":
+			break
+			
+		db_structure[another_field] = another_value
+		
+	db_structure["entries"] = []
 
 	# Initialize the file with an empty JSON array
 	# A fresh database must start as a valid JSON list [] so you can append records to it later
@@ -383,6 +394,28 @@ def add_entry():
 					print("\nEntry cancelled. The primary field cannot be left empty.")
 					input("\nPress [Enter] to go back.")
 					return
+	
+	# Open the database file and load the earlier built structure
+	with open(active_database_path, "r") as f:
+		db_data = json.load(f)
+		
+	# Grab the entries array
+	entries = db_data.get("entries", [])
+
+	# Calculate the next ID automatically
+	if len(entries) == 0:
+		next_id = 1
+	else:
+		next_id = entries[-1]
+		next_id = next_id.get("id", len(entries)) + 1
+			
+	# Inject the ID into the new entry
+	new_entry["id"] = next_id
+			
+	# Append the complete entry to the database list
+	entries.append(new_entry)
+	#db_data["entries"] = entries
+		
 	# Confirm Saving
 	print("\n[S]ave Entry")
 	print("[C]ancel Entry")

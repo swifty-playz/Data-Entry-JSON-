@@ -4,5 +4,6 @@
     "part_of_speech",
     "meaning",
     "CEFR_level",
-    "example_sentence"
+    "example_sentence",
+    "type"
 ]

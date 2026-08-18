@@ -5,5 +5,6 @@
     "part_of_speech",
     "meaning",
     "JLPT_level",
-    "example_sentence"
+    "example_sentence",
+    "type"
 ]
