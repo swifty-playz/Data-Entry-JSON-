@@ -1,0 +1,83 @@
+{
+    "schema_used": "japanese_schema.json",
+    "language_family": "Japonic",
+    "entries": [
+        {
+            "word": "この",
+            "kana_reading": "この",
+            "romaji": "kono",
+            "part_of_speech": "Pre-noun adjectival (連体詞)",
+            "meaning": "this (used before a noun)",
+            "JLPT_level": "N5",
+            "example_sentence": "この犬はとてもかわいいです。",
+            "type": "vocabulary",
+            "id": 1
+        },
+        {
+            "word": "犬",
+            "kana_reading": "いぬ",
+            "romaji": "inu",
+            "part_of_speech": "Noun (名詞)",
+            "meaning": "dog",
+            "JLPT_level": "N5",
+            "example_sentence": "公園に犬がいます。",
+            "type": "vocabulary",
+            "id": 2
+        },
+        {
+            "word": "ここ",
+            "kana_reading": "ここ",
+            "romaji": "koko",
+            "part_of_speech": "Pronoun (代名詞)",
+            "meaning": "here",
+            "JLPT_level": "N5",
+            "example_sentence": "ここが私の学校です。",
+            "type": "vocabulary",
+            "id": 3
+          },
+          {
+            "word": "猫",
+            "kana_reading": "ねこ",
+            "romaji": "neko",
+            "part_of_speech": "Noun (名詞)",
+            "meaning": "cat",
+            "JLPT_level": "N5",
+            "example_sentence": "あの猫は白いです。",
+            "type": "vocabulary",
+            "id": 4
+          },
+          {
+            "word": "石",
+            "kana_reading": "いし",
+            "romaji": "ishi",
+            "part_of_speech": "Noun (名詞)",
+            "meaning": "stone / rock",
+            "JLPT_level": "N4",
+            "example_sentence": "道に小さな石が落ちています。",
+            "type": "vocabulary",
+            "id": 5
+          },
+          {
+            "word": "はじめまして",
+            "kana_reading": "はじめまして",
+            "romaji": "hajimemashite",
+            "part_of_speech": "Expression (感動詞/慣用句)",
+            "meaning": "Nice to meet you.",
+            "JLPT_level": "N5",
+            "example_sentence": "はじめまして、田中です。よろしくお願いします。",
+            "type": "expression",
+            "id": 6
+          },
+          {
+            "word": "ポケモン",
+            "kana_reading": "ポケモン",
+            "romaji": "pokemon",
+            "part_of_speech": "Proper Noun (固有名詞)",
+            "meaning": "Pokemon / Pocket Monsters",
+            "JLPT_level": "None",
+            "example_sentence": "私はポケモンのゲームが大好きです。",
+            "type": "pop_culture",
+            "id": 7
+          }
+    ]
+}

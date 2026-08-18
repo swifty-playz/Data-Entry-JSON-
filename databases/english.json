@@ -17,6 +17,22 @@
             "example_sentence": "\"Finding a twenty-dollar bill in her old winter coat was a wonderful piece of serendipity.\"",
             "type": "vocabulary",
             "id": 2
+        },
+        {
+            "word": "ephemeral",
+            "part_of_speech": "adjective",
+            "meaning": "Lasting for a very short time",
+            "example_sentence": "\"The beautiful autumn colors were ephemeral, lasting only a few weeks before the leaves fell.\"",
+            "type": "vocabulary",
+            "id": 3
+        },
+        {
+            "word": "nostalgia",
+            "part_of_speech": "noun",
+            "meaning": "A sentimental longing or wistful affection for the past.",
+            "example_sentence": "\"Hearing the theme song of his favorite childhood game filled him with deep nostalgia.\"",
+            "type": "vocabulary",
+            "id": 4
         }
     ]
 }

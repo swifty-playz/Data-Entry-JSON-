@@ -212,7 +212,7 @@ def create_new_database():
 	# A fresh database must start as a valid JSON list [] so you can append records to it later
 	try:
 		with open(full_db_path, "w") as f:
-			json.dump(db_structure, f, indent=4)	# indent=4 keeps the text file readable
+			json.dump(db_structure, f, indent=4, ensure_ascii=False)	# indent=4 keeps the text file readable
 		print(f"\nSuccessfully created database file: {db_name} linked to {schema_filename}.")
 
 		# Return both paths so the script can immediately load them into active memory
@@ -273,7 +273,7 @@ def create_new_schema():
 	# Save the schema list to the file
 	try:
 		with open(full_schema_path, "w") as f:
-			json.dump(schema_fields, f, indent=4)	# indent=4 keeps the text file readable
+			json.dump(schema_fields, f, indent=4, ensure_ascii=False)	# indent=4 keeps the text file readable, ensure_ascii=False allows for foreign characters
 
 		print(f"\nSuccessfully created schema blueprint: {schema_name}")
 		print(f"Fields saved: {', '.join(schema_fields)}")
@@ -461,7 +461,7 @@ def add_entry():
 
 		# Save the entire updated structure back to the file
 		with open(active_database_path, "w") as f:
-			json.dump(db_data, f, indent=4)
+			json.dump(db_data, f, indent=4, ensure_ascii=False)
 			
 		print("\nEntry added successfully.")
 		input("\nPress [Enter] to continue.")
@@ -503,7 +503,7 @@ def print_database():
 			db_data = json.load(f)
 			
 	# Convert the dictionary into a perfectly indented string
-	pretty_json = json.dumps(db_data, indent=4)
+	pretty_json = json.dumps(db_data, indent=4, ensure_ascii=False)
 	
 	print("\nViewing the Entire Database")
 	print("-" * 50)
@@ -519,7 +519,7 @@ def print_schema():
 			schema_data = json.load(f)
 			
 	# Convert the dictionary into a perfectly indented string
-	pretty_json = json.dumps(schema_data, indent=4)
+	pretty_json = json.dumps(schema_data, indent=4, ensure_ascii=False)
 	
 	print("\nViewing the Schema")
 	print("-" * 50)
@@ -616,7 +616,7 @@ def delete_entry():
 	
 	# Save the updated database back to the file
 	with open(active_database_path, "w") as f:
-		json.dump(db_data, f, indent=4)
+		json.dump(db_data, f, indent=4, ensure_ascii=False)
 		
 	print(f"\nSuccessfully deleted entry: '{primary_key_value}'.")
 	input("\nPress [Enter] to continue.")
