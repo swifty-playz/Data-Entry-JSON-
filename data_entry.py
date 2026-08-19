@@ -134,7 +134,7 @@ def load_database_and_schema(chosen_db_path):
 	global active_schema
 
 	try:
-		with open(chosen_db_path, "r") as f:
+		with open(chosen_db_path, "r", encoding="utf-8") as f:
 			data = json.load(f)
 
 		# Lock onto the database path
@@ -211,7 +211,7 @@ def create_new_database():
 	# Initialize the file with an empty JSON array
 	# A fresh database must start as a valid JSON list [] so you can append records to it later
 	try:
-		with open(full_db_path, "w") as f:
+		with open(full_db_path, "w", encoding="utf-8") as f:
 			json.dump(db_structure, f, indent=4, ensure_ascii=False)	# indent=4 keeps the text file readable
 		print(f"\nSuccessfully created database file: {db_name} linked to {schema_filename}.")
 
@@ -272,7 +272,7 @@ def create_new_schema():
 
 	# Save the schema list to the file
 	try:
-		with open(full_schema_path, "w") as f:
+		with open(full_schema_path, "w", encoding="utf-8") as f:
 			json.dump(schema_fields, f, indent=4, ensure_ascii=False)	# indent=4 keeps the text file readable, ensure_ascii=False allows for foreign characters
 
 		print(f"\nSuccessfully created schema blueprint: {schema_name}")
@@ -379,7 +379,7 @@ def add_entry():
 	print(f"Filling Data Fields from Schema: {active_schema}\n")
 	
 	# Read the schema file to see what fields are needed
-	with open(active_schema_path, "r") as f:
+	with open(active_schema_path, "r", encoding="utf-8") as f:
 			fields = json.load(f)
 			
 	# Loop through fields and collect inputs into a clean directory
@@ -396,7 +396,7 @@ def add_entry():
 					return
 	
 	# Open the database file and load the earlier built structure
-	with open(active_database_path, "r") as f:
+	with open(active_database_path, "r", encoding="utf-8") as f:
 		db_data = json.load(f)
 		
 	# Grab the entries array
@@ -423,7 +423,7 @@ def add_entry():
 	
 	if action == 'S':
 		# Open the database file and load the earlier built structure
-		with open(active_database_path, "r") as f:
+		with open(active_database_path, "r", encoding="utf-8") as f:
 			db_data = json.load(f)
 		
 		# Duplicate Entry Check
@@ -460,7 +460,7 @@ def add_entry():
 			db_data["entries"].append(new_entry)
 
 		# Save the entire updated structure back to the file
-		with open(active_database_path, "w") as f:
+		with open(active_database_path, "w", encoding="utf-8") as f:
 			json.dump(db_data, f, indent=4, ensure_ascii=False)
 			
 		print("\nEntry added successfully.")
@@ -499,7 +499,7 @@ def update_database_with_new_schema():
 
 def print_database():
 	# Open the database file and load the data into db_data
-	with open(active_database_path, "r") as f:
+	with open(active_database_path, "r", encoding="utf-8") as f:
 			db_data = json.load(f)
 			
 	# Convert the dictionary into a perfectly indented string
@@ -515,7 +515,7 @@ def print_database():
 
 def print_schema():
 	# Open the schema file and load the data into schema_data
-	with open(active_schema_path, "r") as f:
+	with open(active_schema_path, "r", encoding="utf-8") as f:
 			schema_data = json.load(f)
 			
 	# Convert the dictionary into a perfectly indented string
@@ -544,7 +544,7 @@ def search_entries():
 	print(f"Searching Entries from: {active_database}\n")
 	
 	# Read the schema file to grab the primary field
-	with open(active_schema_path, "r") as f:
+	with open(active_schema_path, "r", encoding="utf-8") as f:
 			fields = json.load(f)
 			
 	primary_key_field = fields[0]
@@ -557,7 +557,7 @@ def search_entries():
 		return
 		
 	# Open the database file and load the earlier built structure
-	with open(active_database_path, "r") as f:
+	with open(active_database_path, "r", encoding="utf-8") as f:
 		db_data = json.load(f)
 	
 	# Scan for the unique record
@@ -603,19 +603,19 @@ def delete_entry():
 		return
 		
 	# Load the file data
-	with open(active_database_path, "r") as f:
+	with open(active_database_path, "r", encoding="utf-8") as f:
 		db_data = json.load(f)
 		
 	# Pull the entry out of the list using .pop() to show it to the user
 	deleted_entry = db_data["entries"].pop(target_index)
 	
 	# Grab the primary key name to make a clean confirmation message
-	with open(active_schema_path, "r") as f:
+	with open(active_schema_path, "r", encoding="utf-8") as f:
 		fields = json.load(f)
 	primary_key_value = deleted_entry.get(fields[0])
 	
 	# Save the updated database back to the file
-	with open(active_database_path, "w") as f:
+	with open(active_database_path, "w", encoding="utf-8") as f:
 		json.dump(db_data, f, indent=4, ensure_ascii=False)
 		
 	print(f"\nSuccessfully deleted entry: '{primary_key_value}'.")
@@ -625,7 +625,7 @@ def delete_entry():
 
 def find_entry_index():
 	# Scans the database and returns the index of the matching entry, or a -1.
-	with open(active_schema_path, "r") as f:
+	with open(active_schema_path, "r", encoding="utf-8") as f:
 		fields = json.load(f)
 	
 	# Get the primary field
@@ -635,7 +635,7 @@ def find_entry_index():
 	if not query:
 		return -1
 		
-	with open(active_database_path, "r") as f:
+	with open(active_database_path, "r", encoding="utf-8") as f:
 		db_data = json.load(f)
 		
 	# Use enumerate to grab the actual number position (idx)
