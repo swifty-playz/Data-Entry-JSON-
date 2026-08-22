@@ -1,0 +1,45 @@
+{
+    "schema_used": "spanish_schema.json",
+    "entries": [
+        {
+            "word": "la madera",
+            "gender": "feminine",
+            "part_of_speech": "noun",
+            "meaning": "wood",
+            "CEFR_level": "",
+            "example_sentence": "",
+            "type": "vocabulary",
+            "id": 1
+        },
+        {
+            "word": "el propietario",
+            "gender": "masculine",
+            "part_of_speech": "",
+            "meaning": "owner",
+            "CEFR_level": "",
+            "example_sentence": "",
+            "type": "vocabulary",
+            "id": 2
+        },
+        {
+            "word": "ruido",
+            "gender": "",
+            "part_of_speech": "",
+            "meaning": "noise",
+            "CEFR_level": "",
+            "example_sentence": "",
+            "type": "vocabulary",
+            "id": 3
+        },
+        {
+            "word": "la escoba",
+            "gender": "feminine",
+            "part_of_speech": "noun",
+            "meaning": "broom",
+            "CEFR_level": "",
+            "example_sentence": "",
+            "type": "vocabulary",
+            "id": 4
+        }
+    ]
+}

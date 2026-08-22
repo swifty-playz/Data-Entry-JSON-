@@ -30,17 +30,17 @@ active_database = "None"
 def main():
 	home_screen()
 
-# Home Screen
 # ===== UNIVERSAL JSON DATA ENTRY TOOL =====
-
+#
 # --- Home Screen ---
+#
 # Active Directory: ./directory_name/
-
+#
 # [1] Edit schema file
 # [2] Edit database file
 # [3] Create a brand new SCHEMA blueprint
 # [4] Create a brand new DATABASE file from a schema
-
+#
 # Select action (1-4) or 'Q' to quit: 
 
 def home_screen():
@@ -83,8 +83,8 @@ def home_screen():
 				load_database_and_schema(chosen_file)
 				if active_database_path and active_schema_path:
 					main_action_menu()
-			else:
-				input("\nPress [Enter] to go back.")
+			#else:
+				#input("\nPress [Enter] to go back.")
 		elif choice == '3':
 			create_new_schema()
 		elif choice == '4':
@@ -284,18 +284,21 @@ def create_new_schema():
 		return None
 
 
-
-# Main Action Menu
-# "DATABASE: yokai_watch.json | SCHEMA: creatures_schema.json"
-
+# --- Main Action Menu ---
+# "DATABASE: database_name.json | SCHEMA: schema_name.json"
+#
 # "[1] Add new Entry"
-# "[2] Search / Edit Entries"
+# "[2] Search Entries"
 # "[3] Delete an Entry"
-# "[4] View All (Print Data)"
-# "[5] Drop to Manual Editor (Nano)"
-# "[6] Change Active File/Schema"
-
-# "Select action (1-6) or 'B' to go back: "
+# "[4] View Entire Database"
+# "[5] View Schema"
+# "[6] Drop to Manual Database Editor"
+# "[7] Change Active File/Schema"
+# "[8] Delete Schema"
+# "[9] Delete Database"
+# "[10] Go Through Empty Field Values"
+#
+# "Select action (1-10) or 'B' to go back: "
 
 def main_action_menu():
 	# Selecting actions
@@ -308,7 +311,7 @@ def main_action_menu():
 		else:
 			print(f"\nDATABASE: {os.path.basename(active_database_path)} | SCHEMA: {os.path.basename(active_schema_path)}\n")
 
-		print("[1] Add new Entry")
+		print("[1] Add New Entry")
 		print("[2] Search Entries")
 		print("[3] Delete an Entry")
 		print("[4] View Entire Database")
@@ -317,9 +320,10 @@ def main_action_menu():
 		print("[7] Change Active File/Schema")
 		print("[8] Delete Schema")
 		print("[9] Delete Database")
+		print("[10] Go Through Empty Field Values")
 		print()
 
-		choice = input("Select action (1-9) or 'B' to go back: ")
+		choice = input("Select action (1-10) or 'B' to go back: ")
 
 		if choice == '1':
 			add_entry()
@@ -339,30 +343,13 @@ def main_action_menu():
 			print("Deleting Schema")
 		elif choice == '9':
 			print("Deleting Database")
+		elif choice == '10':
+			print("Going through empty field values...")
 		elif choice == 'B' or choice == 'b':
 			return
 		else:
 			print("\nPlease enter either 1-9 or 'B' for an action")
 
-
-# Dynamic Entry Form (Core Mechanic)
-# "--- Adding New Entry ---"	# Loops through schema with a for loop
-# "--- Filling Data Fields from Schema: {active_schema} ---"
-# "Name: "
-# "Tribe: "
-# "Rank: "
-# "Element: "
-# "Location: "
-
-# "[S] Save Entry"
-# "[C] Cancel Entry"
-
-# "Select action 'S' or 'C': "
-
-# "Entry '{name}' already exists. [O]verwrite or [C]ancel?"	# Prints if user selects 'S' but main entry (name, word, etc.) already exists in the file
-# "Select action 'O' or 'C': "
-
-# "Entry added successfully!"	# Prints if user selects 'S' and it is the only entry of its kind
 
 def add_entry():
 	global active_database_path
@@ -689,44 +676,3 @@ def clear_screen():
 
 
 main()
-
-
-
-
-
-# Writes "Choose JSON file:"
-	# "1) file1"	# reference file1.json
-	# "2) file2"	# reference file2.json
-	# "3) file3"	# reference file3.json
-# If file does not exist in current directory, it creates new file (file4.json)
-
-# Writes "Enter choice:"
-# Go through each field of the JSON file (based of schema) for the entry
-# "Word:"
-# "> "
-# "Meaning:"
-# "> "
-# If word is already covered, give the otpion to continue on or overwrite it with a new value
-
-# Add the full entry into the JSON file
-
-
-
-
-
-# Writes UI
-# ls -> Reads files in current directory
-# open file.json -> Opens JSON file to fully read
-# create file.json -> Creates JSON file
-
-# Universal
-# Schemas?
-# UI: Create, Program Edit, Nano Edit, Delete, Open, Read, Search, ls
-# Create folders?
-# Looping system
-# Call function for each major task
-# Able to Open JSON file to fully read
-# Able to Read a defined amount of the file
-# Able to Search if a defined object is in the file
-# Able to Edit through a designed method via this program (i.e., search for specific object, look through the inside, and edit it)
-# Able to Edit through a Nano call on the file for manual edits
